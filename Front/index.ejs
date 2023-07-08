@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoppy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+    <h2 class="text-bg-info p-1  text-white w-100 text-center h6 position-absolute top-0 start-0">
+        <b> Order the best clothes <span class="text-black">ever!</span></b>
+    </h2>
+
+    <header class="mb-5">
+        <nav class="navbar navbar-expand-lg bg-body-secondary p-3 mt-4 mb-5">
+            <div class="container-fluid">
+                <a class="navbar-brand" id="LogName" href="/"><b>Shoppy</b> </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="about">about</a>
+                        <a class="nav-link" href="register">register</a>
+                        <a class="nav-link" href="login">login</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container text text-center mt-5">
+            <div class="row">
+                <img class="col rounded-top-pill" src="./assists/istockphoto-901863672-612x612.jpg" alt="Shoppy store">
+                <div class="col my-auto">
+                    <h2><strong>Shoppy for online shopping</strong></h2>
+                    <p class="text-muted">since 1973</p>
+                </div>
+            </div>
+        </section>
+        <section class="text-center">
+            <h2 class="mt-5">
+                <%= situation %>
+            </h2>
+            <a href="/register">Create an account now!</a>
+        </section>
+    </main>
+    <script src="./index.js"></script>
+</body>
+
+</html>

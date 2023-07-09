@@ -167,15 +167,23 @@ const shoppingPage = (req, res) => {
         rows[0].name.charAt(0).toUpperCase() + rows[0].name.slice(1);
       pool.query(queries.getAllClothes, (err, result) => {
         if (err) throw err;
-        pool.query(queries.getTotalItems, (err, results) => {
-          if (err) throw err;
-          res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs", {
-            name: req.session.userInfo,
-            clothes: result.rows,
-            numOfItems: result.rows[0].numOfItems,
-            numOfTotal: results.rows[0].sum,
-          });
-        });
+        pool.query(
+          queries.getTotalItems,
+          [req.session.user_id],
+          (err, results) => {
+            if (err) throw err;
+            pool.query(queries.singleTotalItem, (err, results2) => {
+              if (err) throw err;
+              console.log(results2.rows);
+              res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs", {
+                name: req.session.userInfo,
+                clothes: result.rows,
+                numOfItems: results2.rows,
+                numOfTotal: results.rows[0].count,
+              });
+            });
+          }
+        );
       });
     });
   } else {
@@ -185,7 +193,14 @@ const shoppingPage = (req, res) => {
 
 const addItemToCart = (req, res) => {
   console.log(req.body);
-  
+  pool.query(
+    queries.addNewClothToCart,
+    [req.body.name, req.session.user_id],
+    (err, result) => {
+      if (err) throw err;
+      console.log(result);
+    }
+  );
   res.redirect("/");
 };
 

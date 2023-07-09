@@ -73,7 +73,7 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <a class="nav-link active" aria-current="page" href="/home/disover">Discover</a>
-                        <a class="nav-link ml-2" href="/home/cart">Cart <%= numOfTotal ? numOfTotal : (0) %></a>
+                        <a class="nav-link ml-2" href="/home/cart">Cart <%= numOfTotal ? `(${numOfTotal})` : (0) %></a>
                         <a class="nav-link ml-2" href="/home/logout">Logout</a>
                     </div>
                 </div>
@@ -110,15 +110,23 @@
                     <h4 class="product-category">
                         Category: <%= clothes[i].cato %>
                     </h4>
-                    <h4>(<%= clothes[i].numOfItems ? clothes[i].numOfItems : 0 %>)</h4>
-                    <form action="/home/addItem" method="post">
-                        <input type="hidden" name="item_id" value="<%= clothes[i].clothes_id %>" />
-                        <input type="hidden" name="name" value="<%= clothes[i].name %>" />
-                        <input type="hidden" name="size" value="<%= clothes[i].size %>" />
-                        <input type="hidden" name="price" value="<%= clothes[i].price %>" />
-                        <input type="hidden" name="cato" value="<%= clothes[i].cato%>" />
-                        <input type="submit" class="btn mt-3 btn-warning" value="Add to Cart" />
-                    </form>
+                    <% let matchingItem=numOfItems.find(item=> item.clothes_id === clothes[i].clothes_id); %>
+                        <% if (matchingItem) { %>
+                            <h4>
+                                (<%= matchingItem.count %>)
+                            </h4>
+                            <% } else { %>
+                                <h4>(0)</h4>
+                                <% } %>
+
+                                    <form action="/home/addItem" method="post">
+                                        <input type="hidden" name="item_id" value="<%= clothes[i].clothes_id %>" />
+                                        <input type="hidden" name="name" value="<%= clothes[i].name %>" />
+                                        <input type="hidden" name="size" value="<%= clothes[i].size %>" />
+                                        <input type="hidden" name="price" value="<%= clothes[i].price %>" />
+                                        <input type="hidden" name="cato" value="<%= clothes[i].cato%>" />
+                                        <input type="submit" class="btn mt-3 btn-warning" value="Add to Cart" />
+                                    </form>
                 </div>
                 <% } %>
         </div>

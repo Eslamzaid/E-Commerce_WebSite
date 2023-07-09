@@ -10,9 +10,11 @@ const getUserByEmail = "SELECT user_id FROM users WHERE email = $1";
 const checkUser = "SELECT * FROM users WHERE email = $1 AND password = $2";
 const getUserInfo = "SELECT * FROM users WHERE user_id = $1";
 const getAllClothes = "SELECT * FROM clothes";
-const getTotalItems = "SELECT SUM((SELECT numOfItems FROM clothes)) FROM cart";
-
-
+const getTotalItems = "SELECT COUNT(*) FROM cart WHERE user_id = $1";
+const addNewClothToCart =
+  "INSERT INTO cart (clothes_id, user_id) VALUES ( (SELECT clothes_id FROM clothes WHERE name = $1), (SELECT user_id FROM users WHERE user_id = $2))";
+const singleTotalItem =
+  "SELECT clothes_id, COUNT(*) FROM cart GROUP BY clothes_id";
 
 module.exports = {
   getUsers,
@@ -26,4 +28,6 @@ module.exports = {
   getUserInfo,
   getAllClothes,
   getTotalItems,
+  addNewClothToCart,
+  singleTotalItem,
 };

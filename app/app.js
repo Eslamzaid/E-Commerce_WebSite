@@ -6,6 +6,7 @@ const session = require("express-session");
 const app = express();
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
+const shoppyRoutes = require("./shoppy/routes");
 
 app.use(
   session({
@@ -20,6 +21,8 @@ app.use(express.static("D:/Coding/E-Commerce_WebSite/Front"));
 app.set("view engine", "ejs");
 app.use(morgan("tiny"));
 app.use(cookieParser());
+
+app.use("/api/v1/shoppy", shoppyRoutes);
 
 var sessions;
 app.get("/", (req, res) => {

@@ -57,14 +57,14 @@ const addUser = (req, res) => {
         return;
       }
     }
-    // if (results.rows.length) {
-    //   req.session.error =
-    //     "The email you just typed " +
-    //     email.slice(0, 5) +
-    //     "...@gmail.com already exists";
-    //   res.redirect("/api/register");
-    //   return;
-    // }
+    if (results.rows.length) {
+      req.session.error =
+        "The email you just typed " +
+        email.slice(0, 5) +
+        "...@gmail.com already exists";
+      res.redirect("/api/register");
+      return;
+    }
 
     pool.query(
       queries.addUser,
@@ -73,11 +73,6 @@ const addUser = (req, res) => {
         if (!err) {
           const { rows } = await pool.query(queries.getUserByEmail, [email]);
           req.session.user_id = rows[0].user_id;
-          console.log("_-----------------------");
-          console.log(await req.session.user_id);
-          console.log("_-----------------------");
-          console.log(req.session);
-          console.log(results);
           delete req.session.error;
           res.status(201).send("User created successful");
         } else throw err;

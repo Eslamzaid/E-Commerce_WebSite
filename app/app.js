@@ -39,23 +39,6 @@ app.get("/about", (req, res) => {
   res.sendFile("D:/Coding/E-Commerce_WebSite/Front/about.html");
 });
 
-// app.get("/register", (req, res) => {
-//   res.render("D:/Coding/E-Commerce_WebSite/Front/register.ejs", {
-//     err: req.session.error || "",
-//   });
-// });
-
-// app.post("/register", (req, res) => {
-//   console.log(req.body);
-//    else {
-//     // Process the registration logic here
-//     // ...
-//     // If the registration is successful, you can clear the error message from the session
-//     delete session.error;
-//     res.redirect("/");
-//   }
-// });
-
 app.listen(4000, () => {
   console.log("listening on port 4000");
 });

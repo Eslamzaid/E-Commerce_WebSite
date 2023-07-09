@@ -8,22 +8,29 @@ const getUser = (req, res) => {
   //   if (!err) res.status(200).json(results.rows);
   //   else throw err;
   // });
-  console.log(req.session);
-  res.render("D:/Coding/E-Commerce_WebSite/Front/register.ejs", {
-    err: req.session.error || "",
-  });
+  if (req.session.user_id) {
+    res.redirect("/home");
+  } else
+    res.render("D:/Coding/E-Commerce_WebSite/Front/register.ejs", {
+      err: req.session.error || "",
+    });
 };
 
 const getUserById = (req, res) => {
   const user_id = parseInt(req.params.user_id);
   pool.query(queries.getUserById, [user_id], (err, results) => {
-    const noUser = !results.rows.length;
-    if (noUser) {
-      res.status(404).send("could not find user with id " + user_id);
-      return;
+    try {
+      const noUser = !results.rows.length;
+
+      if (noUser) {
+        res.status(404).send("could not find user with id " + user_id);
+        return;
+      }
+      if (!err) res.status(200).json(results.rows);
+      else throw err;
+    } catch (e) {
+      throw e;
     }
-    if (!err) res.status(200).json(results.rows);
-    else throw err;
   });
 };
 
@@ -74,7 +81,9 @@ const addUser = (req, res) => {
           const { rows } = await pool.query(queries.getUserByEmail, [email]);
           req.session.user_id = rows[0].user_id;
           delete req.session.error;
-          res.status(201).send("User created successful");
+          res
+            .status(201)
+            .render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs");
         } else throw err;
       }
     );
@@ -99,7 +108,6 @@ const deleteUser = (req, res) => {
 
 const updateUser = (req, res) => {
   const user_id = req.params.user_id;
-  console.log(typeof user_id);
   const { name, email, isprem } = req.body;
 
   pool.query(queries.getUserById, [user_id], (err, results) => {
@@ -120,10 +128,54 @@ const updateUser = (req, res) => {
   });
 };
 
+const checkUser = (req, res) => {
+  console.log(req.session.user_id);
+  if (req.session.user_id) {
+    res.redirect("/home");
+  } else
+    res.render("D:/Coding/E-Commerce_WebSite/Front/login.ejs", {
+      err: req.session.error2 || "",
+    });
+};
+
+const getBack = (req, res) => {
+  if (req.body.password.length < 8) {
+    req.session.error = "Password must be at least 8 characters long";
+    res.redirect("/api/login");
+    return;
+  }
+  console.log(req.session.user_id);
+  pool.query(
+    queries.checkUser,
+    [req.body.email, req.body.password],
+    (err, result) => {
+      if (err) throw err;
+      if (result.rows.length) {
+        req.session.user_id = result.rows[0].user_id;
+        console.log(req.session.user_id);
+        res.redirect("/home");
+      } else {
+        req.session.error2 = "Incorrect email or password";
+        res.redirect("/api/login");
+      }
+    }
+  );
+};
+// Shopping
+
+const shoppingPage = (req, res) => {
+  if (req.session.user_id) {
+    res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs");
+  } else res.redirect("/");
+};
+
 module.exports = {
   getUser,
   getUserById,
   addUser,
   deleteUser,
   updateUser,
+  shoppingPage,
+  checkUser,
+  getBack,
 };

@@ -6,8 +6,14 @@ const router = Router();
 
 router.get("/register", controller.getUser);
 router.post("/register", controller.addUser);
+router.get("/login", controller.checkUser)
+router.post("/login", controller.getBack)
 router.get("/:user_id", controller.getUserById);
-router.put("/:user_id", controller.updateUser)
-router.delete("/:user_id", controller.deleteUser)
+router.put("/:user_id", controller.updateUser);
+router.delete("/:user_id", controller.deleteUser);
 
-module.exports = router;
+const router2 = Router();
+
+router2.get("/", controller.shoppingPage);
+
+module.exports = { router, router2 };

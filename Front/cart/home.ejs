@@ -23,35 +23,17 @@
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="/about">about</a>
-                        <a class="nav-link" href="/api/register">register</a>
-                        <a class="nav-link" href="/api/login">login</a>
+                        <a class="nav-link active" aria-current="page" href="/home/disover">Discover</a>
+                        <a class="nav-link ml-2" href="/home/cart">Cart</a>
+                        <a class="nav-link ml-2" href="/home/logout">Logout</a>
                     </div>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main>
-        <section class="container text text-center mt-5">
-            <div class="row">
-                <img class="col rounded-top-pill" src="./assists/istockphoto-901863672-612x612.jpg" alt="Shoppy store">
-                <div class="col my-auto">
-                    <h2><strong>Shoppy for online shopping</strong></h2>
-                    <p class="text-muted">since 1973</p>
-                </div>
-            </div>
-        </section>
-        <section class="text-center">
-            <h2 class="mt-5">
-                <%= situation %>
-            </h2>
-            <a href="/api/register">Create an account now!</a>
-        </section>
-    </main>
-    <script src="./index.js"></script>
 </body>
 
 </html>

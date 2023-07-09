@@ -34,6 +34,30 @@
         </nav>
     </header>
 
+    <main>
+        </h1>
+        <section class="container text text-center mt-5">
+            <div class="row">
+                <div class="col my-auto">
+                    <h1>Welcome <%= name %>
+                </div>
+                <div class="col">
+                    <img class="w-auto" src="../assists/orderNow.png" alt="Order now">
+                </div>
+            </div>
+        </section>
+        <ul>
+            <% for( let i=0; i < clothes.length; i++ ) { %>
+
+                <% for( let index=0; index < Object.keys(clothes[i]).length; index++ ) { %>
+
+                    <h2><%= Object.values(clothes[0])[index] %> </h2>
+                    <img src="<%= clothes[0].img %>" alt="adfs  "/>
+
+                    <% } %>
+                        <% } %>
+        </ul>
+    </main>
 </body>
 
 </html>

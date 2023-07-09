@@ -165,8 +165,23 @@ const getBack = (req, res) => {
 
 const shoppingPage = (req, res) => {
   if (req.session.user_id) {
-    res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs");
-  } else res.redirect("/");
+    pool.query(queries.getUserInfo, [req.session.user_id], (err, result) => {
+      if (err) throw err;
+      const { rows } = result;
+      req.session.userInfo =
+        rows[0].name.charAt(0).toUpperCase() + rows[0].name.slice(1);
+      pool.query(queries.getAllClothes, (err, result) => {
+        if (err) throw err;
+        console.log(result.rows);
+        res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs", {
+          name: req.session.userInfo,
+          clothes: result.rows,
+        });
+      });
+    });
+  } else {
+    res.redirect("/");
+  }
 };
 
 module.exports = {

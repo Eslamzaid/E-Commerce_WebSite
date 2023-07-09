@@ -10,6 +10,10 @@ const getUserByEmail = "SELECT user_id FROM users WHERE email = $1";
 const checkUser = "SELECT * FROM users WHERE email = $1 AND password = $2";
 const getUserInfo = "SELECT * FROM users WHERE user_id = $1";
 const getAllClothes = "SELECT * FROM clothes";
+const getTotalItems = "SELECT SUM((SELECT numOfItems FROM clothes)) FROM cart";
+
+
+
 module.exports = {
   getUsers,
   getUserById,
@@ -21,4 +25,5 @@ module.exports = {
   checkUser,
   getUserInfo,
   getAllClothes,
+  getTotalItems,
 };

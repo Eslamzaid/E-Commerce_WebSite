@@ -15,5 +15,6 @@ router.delete("/:user_id", controller.deleteUser);
 const router2 = Router();
 
 router2.get("/", controller.shoppingPage);
+router2.post("/addItem", controller.addItemToCart)
 
 module.exports = { router, router2 };

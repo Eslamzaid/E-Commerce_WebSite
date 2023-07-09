@@ -81,9 +81,7 @@ const addUser = (req, res) => {
           const { rows } = await pool.query(queries.getUserByEmail, [email]);
           req.session.user_id = rows[0].user_id;
           delete req.session.error;
-          res
-            .status(201)
-            .render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs");
+          res.status(201).redirect("/home");
         } else throw err;
       }
     );
@@ -129,7 +127,6 @@ const updateUser = (req, res) => {
 };
 
 const checkUser = (req, res) => {
-  console.log(req.session.user_id);
   if (req.session.user_id) {
     res.redirect("/home");
   } else
@@ -144,7 +141,6 @@ const getBack = (req, res) => {
     res.redirect("/api/login");
     return;
   }
-  console.log(req.session.user_id);
   pool.query(
     queries.checkUser,
     [req.body.email, req.body.password],
@@ -152,7 +148,6 @@ const getBack = (req, res) => {
       if (err) throw err;
       if (result.rows.length) {
         req.session.user_id = result.rows[0].user_id;
-        console.log(req.session.user_id);
         res.redirect("/home");
       } else {
         req.session.error2 = "Incorrect email or password";
@@ -172,16 +167,26 @@ const shoppingPage = (req, res) => {
         rows[0].name.charAt(0).toUpperCase() + rows[0].name.slice(1);
       pool.query(queries.getAllClothes, (err, result) => {
         if (err) throw err;
-        console.log(result.rows);
-        res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs", {
-          name: req.session.userInfo,
-          clothes: result.rows,
+        pool.query(queries.getTotalItems, (err, results) => {
+          if (err) throw err;
+          res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs", {
+            name: req.session.userInfo,
+            clothes: result.rows,
+            numOfItems: result.rows[0].numOfItems,
+            numOfTotal: results.rows[0].sum,
+          });
         });
       });
     });
   } else {
     res.redirect("/");
   }
+};
+
+const addItemToCart = (req, res) => {
+  console.log(req.body);
+  
+  res.redirect("/");
 };
 
 module.exports = {
@@ -193,4 +198,5 @@ module.exports = {
   shoppingPage,
   checkUser,
   getBack,
+  addItemToCart,
 };

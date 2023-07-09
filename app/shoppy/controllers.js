@@ -1,10 +1,16 @@
+const { Session } = require("express-session");
 const pool = require("../../database/dataDB");
 const queries = require("./queries");
+const helpers = require("./helpers");
 
 const getUser = (req, res) => {
-  pool.query(queries.getUsers, (err, results) => {
-    if (!err) res.status(200).json(results.rows);
-    else throw err;
+  // pool.query(queries.getUsers, (err, results) => {
+  //   if (!err) res.status(200).json(results.rows);
+  //   else throw err;
+  // });
+  console.log(req.session);
+  res.render("D:/Coding/E-Commerce_WebSite/Front/register.ejs", {
+    err: req.session.error || "",
   });
 };
 
@@ -25,17 +31,56 @@ const addUser = (req, res) => {
   const { name, email, isprem, password } = req.body;
   // check if email exists
   pool.query(queries.checkEmailExists, [email], (err, results) => {
-    if (results.rows.length) {
-      res.send("Email already exists");
+    const isNullVal = helpers.checkNotNull([name, email, password]);
+    if (isNullVal[0]) {
+      if (isNullVal[1] == 0)
+        req.session.error =
+          "Please fill out all fields, missing field (username)";
+      else if (isNullVal[1] == 1)
+        req.session.error = "Please fill out all fields, missing field (email)";
+      else if (isNullVal[1] == 2)
+        req.session.error =
+          "Please fill out all fields, missing field (password)";
+      else req.session.error = "Please fill out the fields correctly";
+      res.redirect("/api/register");
       return;
     }
+    const isProper = helpers.checkValid([email, password]);
+    if (isProper[0]) {
+      if (isProper[2] == 0) {
+        req.session.error = isProper[1];
+        res.redirect("/api/register");
+        return;
+      } else if (isProper[2] == 1) {
+        req.session.error = isProper[1];
+        res.redirect("/api/register");
+        return;
+      }
+    }
+    // if (results.rows.length) {
+    //   req.session.error =
+    //     "The email you just typed " +
+    //     email.slice(0, 5) +
+    //     "...@gmail.com already exists";
+    //   res.redirect("/api/register");
+    //   return;
+    // }
 
     pool.query(
       queries.addUser,
       [name, email, isprem, password],
-      (err, results) => {
-        if (!err) res.status(201).send("User created successful");
-        else throw err;
+      async (err, results) => {
+        if (!err) {
+          const { rows } = await pool.query(queries.getUserByEmail, [email]);
+          req.session.user_id = rows[0].user_id;
+          console.log("_-----------------------");
+          console.log(await req.session.user_id);
+          console.log("_-----------------------");
+          console.log(req.session);
+          console.log(results);
+          delete req.session.error;
+          res.status(201).send("User created successful");
+        } else throw err;
       }
     );
   });

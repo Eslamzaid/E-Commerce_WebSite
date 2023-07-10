@@ -241,6 +241,7 @@ const shoppingPage = (req, res) => {
           clothes: result.rows,
           numOfItems: numOfOrders,
           numOfTotal: totalAmount,
+          cart: shoppingCart
         });
       });
     });
@@ -298,6 +299,7 @@ const theMegaShop = (req, res) => {
         numOfItems: numOfOrders,
         entire: entireShop[0],
         notF: notFound,
+        cart: shoppingCart
       });
     });
   } else {
@@ -314,7 +316,6 @@ const deleteItem22 = (req, res) => {
   res.redirect("/home/discover");
 };
 
-// ! CREATE the reset button !!!! and an error text if there is no items found
 const editList = (req, res) => {
   console.log(req.body);
   const SetQuery = helpers.queryClothes(req.body);

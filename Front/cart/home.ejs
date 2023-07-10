@@ -54,6 +54,20 @@
     .text-bg-info {
         background-color: #17a2b8;
     }
+
+    .cartBox {
+        position: absolute;
+        top: 3rem;
+        right: 3rem;
+        background-color: #f5f5f5;
+        width: 25rem;
+        height: 20em;
+        overflow-y: scroll;
+    }
+
+    .ourImg {
+        width: 40px;
+    }
 </style>
 
 <body>
@@ -73,7 +87,50 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <a class="nav-link active" aria-current="page" href="/home/discover">Discover</a>
-                        <a class="nav-link ml-2" href="/home/cart">Cart <%= numOfTotal %></a>
+                        <a class="nav-link ml-2" id="ourCart" href="/home/cart">Cart (<%= numOfTotal %>)</a>
+                        <div class="cartBox border">
+                            <div class="">
+                                <table class="table">
+                                    <% if(cart.length==0) {%>
+                                        <h2 class="m-3">Your cart is empty!</h2>
+                                        <% } else {%>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Size</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                <% let counter = 0; %>
+                                                <% let price = 0; %>
+                                                <% for(let i=0; i < cart.length; i++) {%>
+                                                    <tr>
+                                                        <th scope="row"><%= counter++ %></th>
+                                                            <% for(let j=0; j < clothes.length; j++) {%>
+                                                                <% if(clothes[j].clothes_id === parseInt(cart[i].item_id)) {%>
+                                                                    <td><img src="<%= clothes[j].img %>" class="ourImg m-2"/></td>
+                                                                    <% } %>
+                                                                    <% } %>
+                                                                </td>
+                                                                <td class="m-2"><b><%= cart[i].name %></b></td> 
+                                                                <td class="m-2"> $<%= cart[i].price %><% price += parseInt(cart[i].price)  %></td>
+                                                                <td class="m-2"> <%= cart[i].size %></td>
+                                                    </tr>
+                                                            <% } %>
+                                                        <tr>
+                                                            <td>Total Price: $<%= price %></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total items: <%= counter %></td>
+                                                        </tr>
+                                                            <% } %>
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <a class="nav-link ml-2" href="/home/logout">Logout</a>
                     </div>
                 </div>
@@ -142,6 +199,26 @@
         </div>
 
     </main>
+    <script>
+        const box = document.querySelector(".cartBox")
+        const cart = document.querySelector("#ourCart")
+        box.style.display = "none"
+
+        cart.addEventListener("mouseover", (event) => {
+            box.style.display = "block"
+        })
+        cart.addEventListener("mouseleave", (event) => {
+            box.style.display = "none"
+        })
+        box.addEventListener("mouseover", (event) => {
+            box.style.display = "block"
+        })
+        box.addEventListener("mouseleave", (event) => {
+            box.style.display = "none"
+        })
+
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>

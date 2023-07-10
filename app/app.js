@@ -40,7 +40,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-  console.log(req.session.user_id);
   if (req.session.user_id) res.redirect("/home");
   else res.sendFile("D:/Coding/E-Commerce_WebSite/Front/about.html");
 });

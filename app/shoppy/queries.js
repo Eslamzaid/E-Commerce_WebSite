@@ -10,6 +10,7 @@ const getUserByEmail = "SELECT user_id FROM users WHERE email = $1";
 const checkUser = "SELECT * FROM users WHERE email = $1 AND password = $2";
 const getUserInfo = "SELECT * FROM users WHERE user_id = $1";
 const getAllClothes = "SELECT * FROM clothes";
+const getAllClothes10 = "SELECT * FROM clothes LIMIT 10";
 const getTotalItems = "SELECT COUNT(*) FROM cart WHERE user_id = $1";
 const addNewClothToCart =
   "INSERT INTO cart (clothes_id, user_id) VALUES ( (SELECT clothes_id FROM clothes WHERE name = $1), (SELECT user_id FROM users WHERE user_id = $2))";
@@ -30,4 +31,5 @@ module.exports = {
   getTotalItems,
   addNewClothToCart,
   singleTotalItem,
+  getAllClothes10,
 };

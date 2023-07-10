@@ -156,7 +156,80 @@ const getBack = (req, res) => {
     }
   );
 };
+
 // Shopping
+let shoppingCart = [];
+let numOfOrders = [
+  {
+    clothes_id: 1,
+    count: 0,
+  },
+  {
+    clothes_id: 2,
+    count: 0,
+  },
+  {
+    clothes_id: 3,
+    count: 0,
+  },
+  {
+    clothes_id: 4,
+    count: 0,
+  },
+  {
+    clothes_id: 5,
+    count: 0,
+  },
+  {
+    clothes_id: 6,
+    count: 0,
+  },
+  {
+    clothes_id: 7,
+    count: 0,
+  },
+  {
+    clothes_id: 8,
+    count: 0,
+  },
+  {
+    clothes_id: 9,
+    count: 0,
+  },
+  {
+    clothes_id: 10,
+    count: 0,
+  },
+  {
+    clothes_id: 11,
+    count: 0,
+  },
+  {
+    clothes_id: 12,
+    count: 0,
+  },
+  {
+    clothes_id: 13,
+    count: 0,
+  },
+  {
+    clothes_id: 14,
+    count: 0,
+  },
+  {
+    clothes_id: 15,
+    count: 0,
+  },
+  {
+    clothes_id: 16,
+    count: 0,
+  },
+  {
+    clothes_id: 17,
+    count: 0,
+  },
+];
+let totalAmount = 0;
 
 const shoppingPage = (req, res) => {
   if (req.session.user_id) {
@@ -165,25 +238,14 @@ const shoppingPage = (req, res) => {
       const { rows } = result;
       req.session.userInfo =
         rows[0].name.charAt(0).toUpperCase() + rows[0].name.slice(1);
-      pool.query(queries.getAllClothes, (err, result) => {
+      pool.query(queries.getAllClothes10, (err, result) => {
         if (err) throw err;
-        pool.query(
-          queries.getTotalItems,
-          [req.session.user_id],
-          (err, results) => {
-            if (err) throw err;
-            pool.query(queries.singleTotalItem, (err, results2) => {
-              if (err) throw err;
-              console.log(results2.rows);
-              res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs", {
-                name: req.session.userInfo,
-                clothes: result.rows,
-                numOfItems: results2.rows,
-                numOfTotal: results.rows[0].count,
-              });
-            });
-          }
-        );
+        res.render("D:/Coding/E-Commerce_WebSite/Front/cart/home.ejs", {
+          name: req.session.userInfo,
+          clothes: result.rows,
+          numOfItems: numOfOrders,
+          numOfTotal: totalAmount,
+        });
       });
     });
   } else {
@@ -192,16 +254,37 @@ const shoppingPage = (req, res) => {
 };
 
 const addItemToCart = (req, res) => {
-  console.log(req.body);
-  pool.query(
-    queries.addNewClothToCart,
-    [req.body.name, req.session.user_id],
-    (err, result) => {
-      if (err) throw err;
-      console.log(result);
+  shoppingCart.push(req.body);
+  let cloth_id = req.body.item_id;
+  for (let i = 0; i < numOfOrders.length; i++) {
+    if (numOfOrders[i].clothes_id == cloth_id) {
+      numOfOrders[i].count = numOfOrders[i].count + 1;
+      totalAmount++;
     }
-  );
+  }
   res.redirect("/");
+};
+
+const entireShop = []
+const theMegaShop = (req, res) => {
+  if (req.session.user_id) {
+    pool.query(queries.getAllClothes, (err, result) => {
+      if (err) throw err;
+      entireShop.push(result.rows)
+      console.log(entireShop)
+      res.render("D:/Coding/E-Commerce_WebSite/Front/cart/discover.ejs", {
+        numOfTotal: 0,
+        entire: entireShop[0]
+      });
+    });
+  } else {
+    res.redirect("/");
+  }
+};
+
+const editList = (req, res) => {
+  console.log(req.body);
+  res.redirect("/home/discover");
 };
 
 module.exports = {
@@ -214,4 +297,6 @@ module.exports = {
   checkUser,
   getBack,
   addItemToCart,
+  theMegaShop,
+  editList,
 };

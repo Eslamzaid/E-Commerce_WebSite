@@ -22,5 +22,4 @@ router2.post("/discover", controller.editList);
 router2.post("/addItemDiscover", controller.addItem2);
 router2.post("/deleteItem2", controller.deleteItem22);
 
-
 module.exports = { router, router2 };

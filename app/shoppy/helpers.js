@@ -14,7 +14,30 @@ const checkValid = ([email, password]) => {
   else return false;
 };
 
+const queryClothes = (query) => {
+  let result = "SELECT * FROM clothes WHERE ";
+  let counter = 0;
+  if (query.priceProgress != "0") {
+    result += "price < " + query.priceProgress;
+    counter = 1;
+  }
+  if (query.cato) {
+    result +=
+      counter == 1
+        ? " AND cato = " + `'${query.cato}'`
+        : "cato = " + `'${query.cato}'`;
+    counter++;
+  }
+  if (query.size) {
+    result +=
+      counter >= 1 ? " AND size = " + `'${query.size}'` : "size = " + `'${query.size}'`;
+  }
+  console.log(result);
+  return result;
+};
+
 module.exports = {
   checkNotNull,
   checkValid,
+  queryClothes,
 };

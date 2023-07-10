@@ -4,10 +4,6 @@ const queries = require("./queries");
 const helpers = require("./helpers");
 
 const getUser = (req, res) => {
-  // pool.query(queries.getUsers, (err, results) => {
-  //   if (!err) res.status(200).json(results.rows);
-  //   else throw err;
-  // });
   if (req.session.user_id) {
     res.redirect("/home");
   } else
@@ -289,7 +285,7 @@ const deleteItem = (req, res) => {
   res.redirect("/");
 };
 
-const entireShop = [];
+let entireShop = [];
 const theMegaShop = (req, res) => {
   if (req.session.user_id) {
     pool.query(queries.getAllClothes, (err, result) => {
@@ -306,7 +302,6 @@ const theMegaShop = (req, res) => {
     res.redirect("/");
   }
 };
-
 const addItem2 = (req, res) => {
   handlingInc(req, res);
   res.redirect("/home/discover");
@@ -317,8 +312,15 @@ const deleteItem22 = (req, res) => {
   res.redirect("/home/discover");
 };
 
+// ! CREATE the reset button !!!! and an error text if there is no items found
 const editList = (req, res) => {
   console.log(req.body);
+  const SetQuery = helpers.queryClothes(req.body);
+  pool.query(SetQuery, (err, result) => {
+    if (err) throw err;
+    entireShop = [];
+    entireShop.push(result.rows);
+  });
   res.redirect("/home/discover");
 };
 

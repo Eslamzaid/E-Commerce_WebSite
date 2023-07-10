@@ -77,54 +77,80 @@
                         </div>
                         <button id="submitButton" type="submit" class="btn btn-primary">Set</button>
                     </form>
+                    <form action="/home/reset" method="post">
+                        <input type="submit" value="Reset" class="btn btn-info text-white mt-4" />
+                    </form>
                 </div>
-                <div class="col-lg-9">
-                    <section id="products">
-                        <div class="row">
-                            <% for (let i = 0; i < entire.length; i++) { %>
-                                <div class="col-md-6 col-lg-4 my-4">
-                                    <div class="card product">
-                                        <img src="<%= entire[i].img %>" class="card-img-top img-fluid product-image" alt="Product Image">
-                                        <div class="card-body">
-                                            <h5 class="card-title product-name">
-                                                <%= entire[i].name %>
-                                            </h5>
-                                            <p class="card-text product-details">Size: <%= entire[i].size %></p>
-                                            <p class="card-text product-details"><%= entire[i].price %></p>
-                                            <p class="card-text product-details">Category: <%= entire[i].cato %></p>
-                                            <% let matchingItem = numOfItems.find(item => item.clothes_id === entire[i].clothes_id) %>
-                                            <% if (matchingItem) { %>
-                                                <p>(<%= matchingItem.count %>)</p>
-                                            <% } else { %>
-                                                <p>(0)</p>
-                                            <% } %>
-                                            <form action="/home/addItemDiscover" method="post">
-                                                <input type="hidden" name="item_id" value="<%= entire[i].clothes_id %>" />
-                                                <input type="hidden" name="name" value="<%= entire[i].name %>" />
-                                                <input type="hidden" name="size" value="<%= entire[i].size %>" />
-                                                <input type="hidden" name="price" value="<%= entire[i].price %>" />
-                                                <input type="hidden" name="cato" value="<%= entire[i].cato %>" />
-                                                <input type="submit" class="btn mt-3 btn-warning" value="Add to Cart" />
-                                            </form>
-                                            <form action="/home/deleteItem2" method="post">
-                                                <% if (matchingItem && matchingItem.count > 0) { %>
-                                                    <input type="hidden" name="item_id" value="<%= entire[i].clothes_id %>" />
-                                                    <input type="submit" class="btn btn-secondary my-3" value="Delete Item" />
-                                                <% } else { %>
-                                                    <input type="button" class="btn btn-secondary btn-lg my-2" disabled value="Delete Item" />
-                                                <% } %>
-                                            </form>
+                <% if (!notF) { %>
+                    <div class="col-lg-9">
+                        <section id="products">
+                            <div class="row">
+                                <% for (let i=0; i < entire.length; i++) { %>
+                                    <div class="col-md-6 col-lg-4 my-4">
+                                        <div class="card product">
+                                            <img src="<%= entire[i].img %>" class="card-img-top img-fluid product-image"
+                                                alt="Product Image">
+                                            <div class="card-body">
+                                                <h5 class="card-title product-name">
+                                                    <%= entire[i].name %>
+                                                </h5>
+                                                <p class="card-text product-details">Size: <%= entire[i].size %>
+                                                </p>
+                                                <p class="card-text product-details">
+                                                    <%= entire[i].price %>
+                                                </p>
+                                                <p class="card-text product-details">Category: <%= entire[i].cato %>
+                                                </p>
+                                                <% let matchingItem=numOfItems.find(item=> item.clothes_id ===
+                                                    entire[i].clothes_id) %>
+                                                    <% if (matchingItem) { %>
+                                                        <p>(<%= matchingItem.count %>)</p>
+                                                        <% } else { %>
+                                                            <p>(0)</p>
+                                                            <% } %>
+                                                                <form action="/home/addItemDiscover" method="post">
+                                                                    <input type="hidden" name="item_id"
+                                                                        value="<%= entire[i].clothes_id %>" />
+                                                                    <input type="hidden" name="name"
+                                                                        value="<%= entire[i].name %>" />
+                                                                    <input type="hidden" name="size"
+                                                                        value="<%= entire[i].size %>" />
+                                                                    <input type="hidden" name="price"
+                                                                        value="<%= entire[i].price %>" />
+                                                                    <input type="hidden" name="cato"
+                                                                        value="<%= entire[i].cato %>" />
+                                                                    <input type="submit" class="btn mt-3 btn-warning"
+                                                                        value="Add to Cart" />
+                                                                </form>
+                                                                <form action="/home/deleteItem2" method="post">
+                                                                    <% if (matchingItem && matchingItem.count> 0) { %>
+                                                                        <input type="hidden" name="item_id"
+                                                                            value="<%= entire[i].clothes_id %>" />
+                                                                        <input type="submit"
+                                                                            class="btn btn-secondary my-3"
+                                                                            value="Delete Item" />
+                                                                        <% } else { %>
+                                                                            <input type="button"
+                                                                                class="btn btn-secondary btn-lg my-2"
+                                                                                disabled value="Delete Item" />
+                                                                            <% } %>
+                                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            <% } %>
+                                    <% } %>
+                            </div>
+                        </section>
+                    </div>
+                    <% } else {%>
+                        <div class="col-lg-9">
+                            <h1>Empty!</h1>
                         </div>
-                    </section>
-                </div>
+                        <% } %>
             </div>
         </div>
     </main>
-    
+
 
     <script>
         let progressPrice = document.querySelector("#priceProgress")
@@ -136,13 +162,14 @@
         let radioB4 = document.getElementById("Large")
         let radioB5 = document.getElementById("Medium")
         let radioB6 = document.getElementById("Small")
+        let radioB7 = document.getElementById("JeansK")
         input.value = 0
         button.disabled = true
 
         setInterval(() => {
             if (radioB1.checked || radioB2.checked) {
                 button.disabled = false
-            } else if (radioB3.checked || radioB4.checked || radioB5.checked || radioB6.checked) {
+            } else if (radioB3.checked || radioB4.checked || radioB5.checked || radioB6.checked || radioB7.checked) {
                 button.disabled = false
             }
         }, 0)

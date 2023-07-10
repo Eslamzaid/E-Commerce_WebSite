@@ -286,6 +286,7 @@ const deleteItem = (req, res) => {
 };
 
 let entireShop = [];
+let notFound = false;
 const theMegaShop = (req, res) => {
   if (req.session.user_id) {
     pool.query(queries.getAllClothes, (err, result) => {
@@ -296,6 +297,7 @@ const theMegaShop = (req, res) => {
         numOfTotal: totalAmount,
         numOfItems: numOfOrders,
         entire: entireShop[0],
+        notF: notFound,
       });
     });
   } else {
@@ -319,11 +321,29 @@ const editList = (req, res) => {
   pool.query(SetQuery, (err, result) => {
     if (err) throw err;
     entireShop = [];
-    entireShop.push(result.rows);
+    if (result.rowCount == 0) {
+      notFound = true;
+      return;
+    } else {
+      notFound = false;
+      entireShop.push(result.rows);
+    }
   });
   res.redirect("/home/discover");
 };
 
+const resetSettings = (req, res) => {
+  console.log(Object.keys(entireShop[0]).length);
+  notFound = false;
+  if (Object.keys(entireShop[0]).length != 15) {
+    pool.query(queries.getAllClothes, (err, result) => {
+      if (err) throw err;
+      entireShop = []
+      entireShop.push(result.rows);
+    });
+  }
+  res.redirect("/home/discover");
+};
 module.exports = {
   getUser,
   getUserById,
@@ -336,6 +356,7 @@ module.exports = {
   addItemToCart,
   theMegaShop,
   editList,
+  resetSettings,
   addItem2,
   deleteItem,
   deleteItem22,

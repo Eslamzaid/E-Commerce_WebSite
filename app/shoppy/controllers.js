@@ -241,7 +241,7 @@ const shoppingPage = (req, res) => {
           clothes: result.rows,
           numOfItems: numOfOrders,
           numOfTotal: totalAmount,
-          cart: shoppingCart
+          cart: shoppingCart,
         });
       });
     });
@@ -299,7 +299,7 @@ const theMegaShop = (req, res) => {
         numOfItems: numOfOrders,
         entire: entireShop[0],
         notF: notFound,
-        cart: shoppingCart
+        cart: shoppingCart,
       });
     });
   } else {
@@ -339,7 +339,7 @@ const resetSettings = (req, res) => {
   if (Object.keys(entireShop[0]).length != 15) {
     pool.query(queries.getAllClothes, (err, result) => {
       if (err) throw err;
-      entireShop = []
+      entireShop = [];
       entireShop.push(result.rows);
     });
   }

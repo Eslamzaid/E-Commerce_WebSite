@@ -45,40 +45,53 @@
                                     <% if(cart.length==0) {%>
                                         <h2 class="m-3">Your cart is empty!</h2>
                                         <% } else {%>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Size</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                                <% let counter = 0; %>
-                                                <% let price = 0; %>
-                                                <% for(let i=0; i < cart.length; i++) {%>
-                                                    <tr>
-                                                        <th scope="row"><%= counter++ %></th>
-                                                            <% for(let j=0; j < entire.length; j++) {%>
-                                                                <% if(entire[j].clothes_id === parseInt(cart[i].item_id)) {%>
-                                                                    <td><img src="<%= entire[j].img %>" class="ourImg m-2"/></td>
-                                                                    <% } %>
-                                                                    <% } %>
-                                                                </td>
-                                                                <td class="m-2"><b><%= cart[i].name %></b></td> 
-                                                                <td class="m-2"> $<%= cart[i].price %><% price += parseInt(cart[i].price)  %></td>
-                                                                <td class="m-2"> <%= cart[i].size %></td>
-                                                    </tr>
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Image</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Size</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% let counter=0; %>
+                                                    <% let price=0; %>
+                                                        <% for(let i=0; i < cart.length; i++) {%>
+                                                            <tr>
+                                                                <th scope="row">
+                                                                    <%= counter++ %>
+                                                                </th>
+                                                                <% for(let j=0; j < entire.length; j++) {%>
+                                                                    <% if(entire[j].clothes_id===parseInt(cart[i].item_id))
+                                                                        {%>
+                                                                        <td><img src="<%= entire[j].img %>"
+                                                                                class="ourImg m-2" /></td>
+                                                                        <% } %>
+                                                                            <% } %>
+                                                                                </td>
+                                                                                <td class="m-2"><b>
+                                                                                        <%= cart[i].name %>
+                                                                                    </b></td>
+                                                                                <td class="m-2"> $<%= cart[i].price %>
+                                                                                        <% price
+                                                                                            +=parseInt(cart[i].price) %>
+                                                                                </td>
+                                                                                <td class="m-2">
+                                                                                    <%= cart[i].size %>
+                                                                                </td>
+                                                            </tr>
                                                             <% } %>
-                                                        <tr>
-                                                            <td>Total Price: $<%= price %></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Total items: <%= counter %></td>
-                                                        </tr>
-                                                            <% } %>
-                                        </tbody>
+                                                                <tr>
+                                                                    <td>Total Price: $<%= price %>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Total items: <%= counter %>
+                                                                    </td>
+                                                                </tr>
+                                                                <% } %>
+                                            </tbody>
                                 </table>
                             </div>
                         </div>

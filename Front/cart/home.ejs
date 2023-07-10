@@ -125,7 +125,17 @@
                                         <input type="hidden" name="size" value="<%= clothes[i].size %>" />
                                         <input type="hidden" name="price" value="<%= clothes[i].price %>" />
                                         <input type="hidden" name="cato" value="<%= clothes[i].cato%>" />
-                                        <input type="submit" class="btn mt-3 btn-warning" value="Add to Cart" />
+                                        <input type="submit" class="btn mt-3 btn-warning mb-3" value="Add to Cart" />
+                                    </form>
+                                    <form action="/home/deleteItem" method="post">
+                                        <input type="hidden" name="item_id" value="<%= clothes[i].clothes_id %>" />
+                                        <% if(matchingItem.count> 0) { %>
+                                            <input type="submit" class="btn btn-secondary my-3" value="Delete Item" />
+                                            <% } else { %>
+                                                <input type="submit" class="btn btn-secondary btn-lg" disabled
+                                                    value="Delete Item" />
+                                                <% } %>
+
                                     </form>
                 </div>
                 <% } %>

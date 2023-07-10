@@ -253,33 +253,68 @@ const shoppingPage = (req, res) => {
   }
 };
 
-const addItemToCart = (req, res) => {
+const handlingInc = (req, res) => {
   shoppingCart.push(req.body);
   let cloth_id = req.body.item_id;
   for (let i = 0; i < numOfOrders.length; i++) {
     if (numOfOrders[i].clothes_id == cloth_id) {
-      numOfOrders[i].count = numOfOrders[i].count + 1;
+      numOfOrders[i].count++;
       totalAmount++;
     }
   }
+};
+const handleDecrease = (req, res) => {
+  let id = req.body.item_id;
+  for (let i = 0; i < shoppingCart.length; i++) {
+    if (parseInt(shoppingCart[i].item_id) === parseInt(id)) {
+      shoppingCart.splice(i, 1);
+    }
+  }
+  for (let i = 0; i < numOfOrders.length; i++) {
+    if (numOfOrders[i].clothes_id == id) {
+      numOfOrders[i].count--;
+      totalAmount--;
+    }
+  }
+};
+
+const addItemToCart = (req, res) => {
+  handlingInc(req, res);
   res.redirect("/");
 };
 
-const entireShop = []
+const deleteItem = (req, res) => {
+  // console.log(req.body.item_id);
+  handleDecrease(req, res);
+  res.redirect("/");
+};
+
+const entireShop = [];
 const theMegaShop = (req, res) => {
   if (req.session.user_id) {
     pool.query(queries.getAllClothes, (err, result) => {
       if (err) throw err;
-      entireShop.push(result.rows)
-      console.log(entireShop)
+      entireShop.push(result.rows);
+
       res.render("D:/Coding/E-Commerce_WebSite/Front/cart/discover.ejs", {
-        numOfTotal: 0,
-        entire: entireShop[0]
+        numOfTotal: totalAmount,
+        numOfItems: numOfOrders,
+        entire: entireShop[0],
       });
     });
   } else {
     res.redirect("/");
   }
+};
+
+const addItem2 = (req, res) => {
+  handlingInc(req, res);
+  res.redirect("/home/discover");
+};
+
+const deleteItem22 = (req, res) => {
+  handleDecrease(req, res);
+  res.redirect("/home/discover");
 };
 
 const editList = (req, res) => {
@@ -299,4 +334,7 @@ module.exports = {
   addItemToCart,
   theMegaShop,
   editList,
+  addItem2,
+  deleteItem,
+  deleteItem22,
 };

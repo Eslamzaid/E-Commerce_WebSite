@@ -16,7 +16,11 @@ const router2 = Router();
 
 router2.get("/", controller.shoppingPage);
 router2.post("/addItem", controller.addItemToCart);
+router2.post("/deleteItem", controller.deleteItem);
 router2.get("/discover", controller.theMegaShop);
 router2.post("/discover", controller.editList);
+router2.post("/addItemDiscover", controller.addItem2);
+router2.post("/deleteItem2", controller.deleteItem22);
+
 
 module.exports = { router, router2 };

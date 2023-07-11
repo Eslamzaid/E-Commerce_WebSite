@@ -24,5 +24,6 @@ router2.post("/deleteItem2", controller.deleteItem22);
 router2.post("/reset", controller.resetSettings);
 router2.get("/cart", controller.cartPage);
 router2.post("/checkout", controller.checkOut);
+router2.post("/logout", controller.logOut);
 
 module.exports = { router, router2 };

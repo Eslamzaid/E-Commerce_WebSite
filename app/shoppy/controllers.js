@@ -311,7 +311,8 @@ const theMegaShop = (req, res) => {
 const addItem2 = (req, res) => {
   handlingInc(req, res);
   bought = false;
-  res.redirect("/home/discover");
+  res.send("POST recieved", 200);
+  res.end();
 };
 
 const deleteItem22 = (req, res) => {
@@ -437,7 +438,14 @@ const checkOut = (req, res) => {
       count: 0,
     },
   ];
+  totalAmount = 0;
   res.redirect("/home/cart");
+};
+
+const logOut = (req, res) => {
+  console.log("Log out successfully!");
+  delete req.session.user_id;
+  res.redirect("/");
 };
 
 module.exports = {
@@ -458,4 +466,5 @@ module.exports = {
   deleteItem22,
   cartPage,
   checkOut,
+  logOut,
 };

@@ -22,7 +22,6 @@ app.use(bodyParser.json());
 app.use(express.static("D:/Coding/E-Commerce_WebSite/Front"));
 app.set("view engine", "ejs");
 app.use(morgan("tiny"));
-// app.use(cookieParser());
 
 app.use("/api", shoppyRoutes.router);
 app.use("/home", shoppyRoutes.router2);

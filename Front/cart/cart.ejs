@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<style>
+    .wiImg {
+        width: 10em;
+    }
+</style>
+
+<body>
+    <header class="mb-5">
+        <nav class="navbar navbar-expand-lg bg-body-secondary p-3 mt-4 mb-5">
+            <div class="container-fluid">
+                <a class="navbar-brand" id="LogName" href="/"><b>Shoppy</b> </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="/home/discover">Discover</a>
+                        <a class="nav-link ml-2" id="ourCart" href="/home/cart">Cart</a>
+                        <a class="nav-link ml-2" href="/home/logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>  
+        <% if (shoppingC.length==0) { %>
+            <h2 class="m-4 text-bg-info center text-center">
+                <%= buy ? "Your order is in the way!" : "Your cart is empty" %>
+            </h2>
+            <% } else {%>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">N.items</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% let counter=0; %>
+                            <% let count={} %>
+                                <% let totalNum=0 %>
+                                    <% let totalPrice=0; %>
+                                        <% for (let i=0; i < shoppingC.length; i++) { %>
+                                            <% if(!(shoppingC[i].name in count)) {%>
+                                                <% count[shoppingC[i].name]=1 %>
+                                                    <% totalNum++ %>
+                                                        <% } else {%>
+                                                            <% count[shoppingC[i].name] +=1 %>
+                                                                <% totalNum++ %>
+                                                                    <% } %>
+                                                                        <% } %>
+
+
+                                                                            <% for(let j in count) { %>
+                                                                                <% for(let h of shoppingC) { %>
+                                                                                    <% if(j==h.name) {%>
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <%= counter + 1 %>
+                                                                                            </td>
+                                                                                            <td><img class="wiImg"
+                                                                                                    src="<%= h.img %>"
+                                                                                                    alt="Shopping item number <%= counter %>" />
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= h.name %>
+                                                                                            </td>
+                                                                                            <td>$<%= h.price %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= h.size %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= count[j] %>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <% counter++ %>
+                                                                                            <% totalPrice
+                                                                                                +=parseInt(h.price) *
+                                                                                                count[j] %>
+                                                                                                <% break %>
+                                                                                                    <% } %>
+                                                                                                        <% } %>
+                                                                                                            <% } %>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"><strong>Total price:</strong></td>
+                            <td colspan="2">$<%= totalPrice %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>Total different clothes:</strong></td>
+                            <td colspan="2">
+                                <%= counter %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>All clothes:</strong></td>
+                            <td colspan="2"><strong>
+                                    <%= totalNum %>
+                                </strong></td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-end">
+                                <form action="/home/checkout" method="post">
+                                    <button class="btn btn-primary" type="submit">Checkout</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <% } %>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

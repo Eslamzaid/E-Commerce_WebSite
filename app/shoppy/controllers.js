@@ -225,6 +225,7 @@ let numOfOrders = [
     count: 0,
   },
 ];
+
 let totalAmount = 0;
 
 const shoppingPage = (req, res) => {
@@ -288,6 +289,7 @@ const deleteItem = (req, res) => {
 
 let entireShop = [];
 let notFound = false;
+let bought = false;
 const theMegaShop = (req, res) => {
   if (req.session.user_id) {
     pool.query(queries.getAllClothes, (err, result) => {
@@ -308,6 +310,7 @@ const theMegaShop = (req, res) => {
 };
 const addItem2 = (req, res) => {
   handlingInc(req, res);
+  bought = false;
   res.redirect("/home/discover");
 };
 
@@ -345,6 +348,98 @@ const resetSettings = (req, res) => {
   }
   res.redirect("/home/discover");
 };
+
+const cartPage = (req, res) => {
+  if (req.session.user_id) {
+    res.render("D:/Coding/E-Commerce_WebSite/Front/cart/cart.ejs", {
+      shoppingC: shoppingCart,
+      buy: bought,
+    });
+  } else {
+    res.redirect("/");
+  }
+};
+
+const checkOut = (req, res) => {
+  const check = queries.checkOutQuery(shoppingCart, req.session.user_id);
+  pool.query(check, (err, result) => {
+    if (err) throw err;
+    shoppingCart = [];
+    bought = true;
+  });
+  numOfOrders = [
+    {
+      clothes_id: 1,
+      count: 0,
+    },
+    {
+      clothes_id: 2,
+      count: 0,
+    },
+    {
+      clothes_id: 3,
+      count: 0,
+    },
+    {
+      clothes_id: 4,
+      count: 0,
+    },
+    {
+      clothes_id: 5,
+      count: 0,
+    },
+    {
+      clothes_id: 6,
+      count: 0,
+    },
+    {
+      clothes_id: 7,
+      count: 0,
+    },
+    {
+      clothes_id: 8,
+      count: 0,
+    },
+    {
+      clothes_id: 9,
+      count: 0,
+    },
+    {
+      clothes_id: 10,
+      count: 0,
+    },
+    {
+      clothes_id: 11,
+      count: 0,
+    },
+    {
+      clothes_id: 12,
+      count: 0,
+    },
+    {
+      clothes_id: 13,
+      count: 0,
+    },
+    {
+      clothes_id: 14,
+      count: 0,
+    },
+    {
+      clothes_id: 15,
+      count: 0,
+    },
+    {
+      clothes_id: 16,
+      count: 0,
+    },
+    {
+      clothes_id: 17,
+      count: 0,
+    },
+  ];
+  res.redirect("/home/cart");
+};
+
 module.exports = {
   getUser,
   getUserById,
@@ -361,4 +456,6 @@ module.exports = {
   addItem2,
   deleteItem,
   deleteItem22,
+  cartPage,
+  checkOut,
 };

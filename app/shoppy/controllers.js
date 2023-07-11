@@ -311,8 +311,8 @@ const theMegaShop = (req, res) => {
 const addItem2 = (req, res) => {
   handlingInc(req, res);
   bought = false;
-  res.send("POST recieved", 200);
-  res.end();
+  res.redirect("/home/discover");
+
 };
 
 const deleteItem22 = (req, res) => {
